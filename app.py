@@ -51,25 +51,22 @@ if 'api_configured' not in st.session_state:
 if 'history' not in st.session_state:
     st.session_state.history = []
 
+# Configure API key from Streamlit secrets
+try:
+    api_key = st.secrets["GEMINI_API_KEY"]
+    genai.configure(api_key=api_key)
+    st.session_state.api_configured = True
+except Exception as e:
+    st.session_state.api_configured = False
+    st.error(f"⚠️ API Key Configuration Error: {str(e)}")
+    st.info("Please make sure GEMINI_API_KEY is set in Streamlit secrets.")
+
 # Header
 st.markdown('<div class="main-header">⚽ CoachBot AI</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Your Personal AI Sports Coach - Empowering Youth Athletes</div>', unsafe_allow_html=True)
 
-# Sidebar - API Configuration
+# Sidebar
 with st.sidebar:
-    st.header("🔑 Configuration")
-    api_key = st.text_input("Enter your Gemini API Key", type="password", help="Get your API key from Google AI Studio")
-    
-    if api_key:
-        try:
-            genai.configure(api_key=api_key)
-            st.session_state.api_configured = True
-            st.success("✅ API Key Configured!")
-        except Exception as e:
-            st.error(f"❌ Invalid API Key: {str(e)}")
-            st.session_state.api_configured = False
-    
-    st.markdown("---")
     st.header("ℹ️ About CoachBot")
     st.info("""
     CoachBot AI provides:
@@ -84,17 +81,23 @@ with st.sidebar:
     st.header("📊 Settings")
     temperature = st.slider("Creativity Level", 0.1, 1.0, 0.5, 0.1, 
                            help="Lower = Conservative, Higher = Creative")
+    
+    st.markdown("---")
+    if st.session_state.api_configured:
+        st.success("✅ API Configured")
+    else:
+        st.error("❌ API Not Configured")
 
 # Main content
 if not st.session_state.api_configured:
-    st.warning("⚠️ Please enter your Gemini API key in the sidebar to get started!")
+    st.error("⚠️ API Key is not configured properly!")
     st.info("""
-    ### How to get your API key:
-    1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
-    2. Sign in with your Google account
-    3. Click "Create API Key"
-    4. Copy and paste it in the sidebar
-    """)
+    ### For administrators:
+    Configure the API key in Streamlit Cloud:
+    1. Go to your app settings in Streamlit Cloud
+    2. Click on "Secrets"
+    3. Add your Gemini API key as:
+""")
 else:
     # Feature Selection
     st.header("🎯 Select Your Coaching Feature")
@@ -439,7 +442,7 @@ Focus on safe, gradual progression."""
                 
             except Exception as e:
                 st.error(f"❌ Error generating coaching plan: {str(e)}")
-                st.info("Please check your API key and try again.")
+                st.info("Please check your API key configuration and try again.")
     
     # History section
     if st.session_state.history:
