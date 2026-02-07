@@ -97,6 +97,7 @@ if not st.session_state.api_configured:
     1. Go to your app settings in Streamlit Cloud
     2. Click on "Secrets"
     3. Add your Gemini API key as:
+    GEMINI_API_KEY = "your-api-key-here"
 """)
 else:
     # Feature Selection
