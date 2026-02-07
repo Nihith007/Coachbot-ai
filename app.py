@@ -97,8 +97,10 @@ if not st.session_state.api_configured:
     1. Go to your app settings in Streamlit Cloud
     2. Click on "Secrets"
     3. Add your Gemini API key as:
+    ```
     GEMINI_API_KEY = "your-api-key-here"
-""")
+    ```
+    """)
 else:
     # Feature Selection
     st.header("🎯 Select Your Coaching Feature")
@@ -443,7 +445,7 @@ Focus on safe, gradual progression."""
                 
             except Exception as e:
                 st.error(f"❌ Error generating coaching plan: {str(e)}")
-                st.info("Please check your API key configuration and try again.")
+                st.info("Please check your API key and try again.")
     
     # History section
     if st.session_state.history:
@@ -465,3 +467,4 @@ st.markdown("""
     <p style='font-size: 0.9rem;'>⚠️ Always consult with a qualified coach or healthcare provider before starting any new training program.</p>
 </div>
 """, unsafe_allow_html=True)
+
