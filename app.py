@@ -213,7 +213,7 @@ else:
         with st.spinner("🤖 CoachBot is analyzing your requirements..."):
             try:
                 # Initialize Gemini model
-                model = genai.GenerativeModel('gemini-1.5-flash')
+                model = genai.GenerativeModel('gemini-2.5-flash')
                 
                 # Construct prompt based on feature
                 prompt = f"""You are CoachBot AI, an expert sports coach specializing in youth athlete development. 
